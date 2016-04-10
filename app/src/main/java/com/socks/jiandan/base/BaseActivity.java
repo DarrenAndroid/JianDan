@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.socks.jiandan.BuildConfig;
@@ -23,6 +24,8 @@ import com.socks.jiandan.utils.logger.Logger;
 public abstract class BaseActivity extends AppCompatActivity implements ConstantString {
 
     protected Context mContext;
+    protected final String TAG = getClass().getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,19 @@ public abstract class BaseActivity extends AppCompatActivity implements Constant
 
     public void executeRequest(Request<?> request) {
         RequestManager.addRequest(request, this);
+    }
+
+    protected String pass(String string) {
+        if (string == null) {
+            Log.d(TAG, "null String");
+            return "";
+        }
+        return string;
+    }
+
+    protected String pass(Integer integer) {
+        if (integer == null) return "";
+        return "" + integer;
     }
 
 }

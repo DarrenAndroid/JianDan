@@ -2,7 +2,10 @@ package com.socks.jiandan.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.facebook.stetho.Stetho;
 import com.socks.greendao.DaoMaster;
@@ -28,6 +31,10 @@ public class JDApplication extends Application {
 
     private RefWatcher refWatcher;
 
+    public static Resources mResources;
+
+//    private static Toaster sToaster;
+
     @Override
     public void onCreate() {
         StrictModeUtil.init();
@@ -35,6 +42,7 @@ public class JDApplication extends Application {
         refWatcher = LeakCanary.install(this);
         mContext = this;
         ImageLoadProxy.initImageLoader(this);
+        mResources = mContext.getResources();
 
         if (BuildConfig.DEBUG) {
             Logger.init().hideThreadInfo().setMethodCount(1).setLogLevel(LogLevel.FULL);
@@ -76,4 +84,12 @@ public class JDApplication extends Application {
         return daoSession;
     }
 
+    public static boolean isWifiConnected() {
+        ConnectivityManager connManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (networkInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
 }
